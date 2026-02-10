@@ -21,3 +21,5 @@ class Vigenere {
   std::string key_;
   std::string cipher_text_;
 };
+
+void replaceTildes(std::string& s);

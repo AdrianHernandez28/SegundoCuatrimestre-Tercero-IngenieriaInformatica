@@ -5,6 +5,9 @@ Vigenere::Vigenere(const std::string& original_text, const std::string& key) {
   text_ = original_text;
   key_ = key;
 
+  replaceTildes(text_);
+  replaceTildes(key_);
+
   //Transformamos todas las letras a mayúscula
   for (char& c : key_) {
       c = std::toupper(static_cast<unsigned char>(c));
@@ -45,3 +48,18 @@ std::string Vigenere::getText() const { return text_; }
 std::string Vigenere::getTextKey() const { return text_key_; }
 std::string Vigenere::getCipherText() const { return cipher_text_; }
 size_t Vigenere::getSizeKey() const { return key_.size(); }
+
+
+void replaceTildes(std::string& s) {
+    const std::pair<std::string, std::string> map[] = {
+        {"á", "A"}, {"é", "E"}, {"í", "I"}, {"ó", "O"}, {"ú", "U"},
+        {"Á", "A"}, {"É", "E"}, {"Í", "I"}, {"Ó", "O"}, {"Ú", "U"}
+    };
+    
+    for (const auto& [from, to] : map) {
+        size_t pos;
+        while ((pos = s.find(from)) != std::string::npos) {
+            s.replace(pos, from.length(), to);
+        }
+    }
+}
