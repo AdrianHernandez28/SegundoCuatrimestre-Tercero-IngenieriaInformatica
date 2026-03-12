@@ -67,7 +67,7 @@ void Vernam::Code() {
     bin_nums.push_back(binary_key_.substr(j, num_bits));
   }
 
-  for (int k = 0; k < bin_nums.size(); k++) {
+  for (size_t k = 0; k < bin_nums.size(); k++) {
     const std::string& bin_str = bin_nums[k];
     std::bitset<8> b(bin_str);
     //Con esto paso el número binario directamente a decimal
