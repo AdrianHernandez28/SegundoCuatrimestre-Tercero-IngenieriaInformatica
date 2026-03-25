@@ -1,6 +1,6 @@
-#include "AES.h"
+#include "CBC.h"
 
-AES::AES(std::array<uint8_t, 16>& key, std::array<uint8_t, 16>& original_text) {
+CBC::CBC(std::array<uint8_t, 16>& key, std::array<uint8_t, 16>& original_text) {
   int index = 0;
   for (size_t i = 0; i < 4; i++) {
     for (size_t j = 0; j < 4; j++) {
@@ -11,7 +11,7 @@ AES::AES(std::array<uint8_t, 16>& key, std::array<uint8_t, 16>& original_text) {
   }
 }
 
-void AES::encrypt() {
+void CBC::encrypt() {
     keyExpansion();
     
     addRoundKey(0);
@@ -30,7 +30,7 @@ void AES::encrypt() {
     printTrace(10);
 }
 
-void AES::addRoundKey(int round) {
+void CBC::addRoundKey(int round) {
   // Calculamos en qué columna de w_ empieza la clave de esta ronda
   int c = round * 4; 
     
@@ -42,7 +42,7 @@ void AES::addRoundKey(int round) {
   }
 }
 
-void AES::subBytes() {
+void CBC::subBytes() {
   for (size_t i = 0; i < 4; i++) {
     for (size_t j = 0; j < 4; j++) {
       uint8_t byte = state_[i][j];
@@ -53,7 +53,7 @@ void AES::subBytes() {
   } 
 }
 
-void AES::shiftRows() {
+void CBC::shiftRows() {
   std::array<std::array<uint8_t, 4>, 4> copy = state_;
 
   for (int i = 1; i < 4; i++) {
@@ -65,7 +65,7 @@ void AES::shiftRows() {
   }
 }
 
-void AES::mixColumns() {
+void CBC::mixColumns() {
   // Recorremos cada columna (c) de la matriz de estado
   for (size_t c = 0; c < 4; c++) {
     std::array<uint8_t, 4> a;
@@ -91,7 +91,7 @@ void AES::mixColumns() {
   }
 }
 
-void AES::keyExpansion() {
+void CBC::keyExpansion() {
     //Las primeras 4 palabras son la clave original
     for (int i = 0; i < 4; i++) {
         w_[i][0] = key_[0][i]; 
@@ -136,7 +136,7 @@ void AES::keyExpansion() {
     }
 }
 
-void AES::printTrace(int round) {
+void CBC::printTrace(int round) {
     std::cout << "R" << std::dec << round << " (Subclave = ";
     
     //Imprimimos los 16 bytes de la subclave de esta ronda
@@ -159,11 +159,22 @@ void AES::printTrace(int round) {
     std::cout << std::endl;
 }
 
-void AES::printState() const {
+void CBC::printState() const {
   for (int col = 0; col < 4; col++) {
     for (int row = 0; row < 4; row++) {
-            std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)state_[row][col];
+      std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)state_[row][col];
     }
   }
 }
 
+std::array<uint8_t, 16> CBC::getResult() const {
+    std::array<uint8_t, 16> result;
+    int index = 0;
+    for (size_t i = 0; i < 4; i++) {
+      for (size_t j = 0; j < 4; j++) {
+        result[index] = state_[j][i];
+        index++;
+      }
+    }
+    return result;
+  }
