@@ -15,19 +15,19 @@ void CBC::encrypt() {
     keyExpansion();
     
     addRoundKey(0);
-    printTrace(0); 
+   // printTrace(0); 
     
     for (int i = 1; i <= 9; i++) { 
         subBytes();
         shiftRows();
         mixColumns();
         addRoundKey(i);
-        printTrace(i);
+        //printTrace(i);
     }    
     subBytes();
     shiftRows();
     addRoundKey(10);
-    printTrace(10);
+   // printTrace(10);
 }
 
 void CBC::addRoundKey(int round) {
@@ -162,7 +162,7 @@ void CBC::printTrace(int round) {
 void CBC::printState() const {
   for (int col = 0; col < 4; col++) {
     for (int row = 0; row < 4; row++) {
-      std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)state_[row][col];
+      std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)state_[row][col] << ' ';
     }
   }
 }

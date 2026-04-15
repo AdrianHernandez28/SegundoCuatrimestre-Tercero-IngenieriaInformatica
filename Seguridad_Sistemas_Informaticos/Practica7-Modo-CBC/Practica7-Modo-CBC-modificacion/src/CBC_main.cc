@@ -3,6 +3,7 @@
 int main() {
   std::array<uint8_t, 16> key, iv, block1, block2;
   std::string str_key, str_iv, str_b1, str_b2;
+  int difference = 0;
 
   //Pedimos los datos
   std::cout << "Clave: ";
@@ -36,8 +37,10 @@ int main() {
     std::cout << "Error: El Bloque 1 no tiene 16 bytes (32 caracteres)." << std::endl;
     return 1; 
   }
-  if (str_b2.length() != 32) {
-    std::cout << "Error: El Bloque 2 no tiene 16 bytes (32 caracteres)." << std::endl;
+  if (str_b2.length() < 32) {
+    difference = str_b1.length() - str_b2.length();
+  } else if (str_b2.length() > 32) {
+    std::cout << "Error: El Bloque 2 tiene más de 16 bytes (32 caracteres)." << std::endl;
     return 1; 
   }
 
@@ -47,10 +50,10 @@ int main() {
     key[i] = static_cast<uint8_t>(std::stoi((str_key.substr(j, 2)), nullptr, 16));
     iv[i] = static_cast<uint8_t>(std::stoi((str_iv.substr(j, 2)), nullptr, 16));
     block1[i] = static_cast<uint8_t>(std::stoi((str_b1.substr(j, 2)), nullptr, 16));
-    block2[i] = static_cast<uint8_t>(std::stoi((str_b2.substr(j, 2)), nullptr, 16));
     i++;
     j += 2;
   }
+
 
   std::cout << "\n--- RESULTADOS ---" << std::endl;
 
@@ -67,6 +70,36 @@ int main() {
   std::cout << std::endl;
 
   std::array<uint8_t, 16> cipher1 = cbc1.getResult();
+  std::string str_cipher1 = "";
+
+  int c = difference;
+
+
+  std::cout << str_b2 << std::endl;
+
+  int bytes_usuario = str_b2.length() / 2;
+
+  int k = 0;
+  int p = 0;
+  while (k < bytes_usuario) {
+    block2[k] = static_cast<uint8_t>(std::stoi((str_b2.substr(p, 2)), nullptr, 16));
+    k++;
+    p += 2;
+  }
+
+  if (bytes_usuario < 16) {
+      int j = 0;
+      for (int i = bytes_usuario; i < 16; i++) {
+          block2[i] = cipher1[j];
+          j++;
+      }
+  }
+
+  std::cout << std::endl;
+  for (int i = 0; i < 16; i++) {
+    std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)block2[i] << ' ';
+  }
+  std::cout << std::endl;
 
   for (int x = 0; x < 16; x++) {
     block2[x] ^= cipher1[x]; 

@@ -1,0 +1,28 @@
+# Nombre del ejecutable
+TARGET = diffie_hellman
+
+# Compilador y flags
+CXX = g++
+CXXFLAGS = -Wall -Wextra -std=c++17 -O2
+
+# Archivos fuente y objetos
+SRCS = src/diffie_hellman.cc src/diffie_hellman_main.cc
+OBJS = $(SRCS:.cc=.o)
+
+# Regla por defecto
+all: $(TARGET)
+
+# Regla para compilar el ejecutable
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Regla para compilar archivos .cc a .o
+%.o: %.cc
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Limpiar archivos generados
+clean:
+	rm -f $(TARGET) $(OBJS)
+
+# Phony targets
+.PHONY: all clean
