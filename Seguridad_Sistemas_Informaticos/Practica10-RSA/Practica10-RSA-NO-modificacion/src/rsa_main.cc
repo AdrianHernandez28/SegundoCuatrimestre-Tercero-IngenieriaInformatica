@@ -70,7 +70,7 @@ int main() {
       m_value = (m_value * 26) + charToInt(text[i + j]);
     }
     m_values.push_back(m_value);
-    long long c_value = binaryExponentiation(m_value, e, n);
+    long long c_value = modularExponentiation(m_value, e, n);
     c_values.push_back(c_value);
   }
 

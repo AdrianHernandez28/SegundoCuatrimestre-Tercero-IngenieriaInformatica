@@ -12,38 +12,36 @@ bool isPrime(int n) {
     return true;
 }
 
-long long modularMultiplicativeInverse(long long a, long long m) {
-    long long m0 = m;
-    long long y = 0, x = 1;
+long long modularMultiplicativeInverse(long long value, long long module) {
+    long long original_module = module;
+    
+    long long auxiliary_inverse = 0;
+    long long inverse = 1;
 
-    // Si el módulo es 1, no hay inverso
-    if (m == 1) return 0;
+    if (module == 1) return 0;
 
-    while (a > 1) {
-        // Si a es 0, el MCD no es 1, por lo que no hay inverso
-        if (m == 0) return -1; 
+    while (value > 1) {
+        if (module == 0) return -1; 
 
-        // q es el cociente
-        long long q = a / m;
-        long long t = m;
+        long long quotient = value / module;
+        
+        long long temp_module = module;
+        module = value % module;
+        value = temp_module;
 
-        // m es el resto ahora, proceso estándar de Euclides
-        m = a % m;
-        a = t;
-        t = y;
-
-        // Actualizamos x e y (coeficientes de Bézout)
-        y = x - q * y;
-        x = t;
+        long long temp_inverse = auxiliary_inverse;
+        auxiliary_inverse = inverse - quotient * auxiliary_inverse;
+        inverse = temp_inverse;
     }
 
-    // Aseguramos que x sea positivo
-    if (x < 0) x += m0;
+    if (inverse < 0) {
+        inverse += original_module;
+    }
 
-    return x;
+    return inverse;
 }
 
-long long binaryExponentiation(long long alpha, long long exponent, long long module) {
+long long modularExponentiation(long long alpha, long long exponent, long long module) {
   long long x = 1;
   alpha %= module;
 
