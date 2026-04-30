@@ -9,3 +9,5 @@ long long modularExponentiation(long long alpha, long long exponent, long long m
 int charToInt(char c);
 
 long long extendedEuclides(long long a, long long b, long long &x, long long &y);
+
+long long calculateLambda(long long p, long long q);

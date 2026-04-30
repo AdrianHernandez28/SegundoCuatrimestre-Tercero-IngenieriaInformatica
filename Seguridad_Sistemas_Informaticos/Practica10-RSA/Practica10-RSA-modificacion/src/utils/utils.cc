@@ -52,3 +52,11 @@ long long extendedEuclides(long long a, long long b, long long &x, long long &y)
   y = x1;
   return mcd;
 }
+
+long long calculateLambda(long long p, long long q) {
+  long long product = (p - 1) * (q - 1);
+  long long x, y;
+  long long mcd = extendedEuclides(p-1, q-1, x, y);
+  if (mcd == 0) return -1;
+  return product / mcd;
+}
