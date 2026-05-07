@@ -1,1 +1,0 @@
-# SegundoCuatrimestre-Tercero-IngenieriaInformatica
