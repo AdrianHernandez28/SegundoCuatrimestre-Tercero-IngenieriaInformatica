@@ -129,11 +129,3 @@ std::string blocksToText(std::vector<long long>& blocks, int block_size) {
     }
     return text;
 }
-
-long long firmaConDigest(std::vector<long long> lista_bloques_decimales, long long d, long long n) {
-    long long sumatotal = 0;
-    for (const long long blq : lista_bloques_decimales) {
-        sumatotal = (sumatotal + blq) % n;
-    }
-    return modExp(sumatotal, d, n);
-}

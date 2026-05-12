@@ -52,10 +52,9 @@ int main() {
         std::cout << "Clave privada calculada (d): " << d_private << std::endl;
         std::cout << "n = " << n << std::endl;
         std::cout << "Tamaño de bloque: " << block_size << std::endl;
+        std::cout << "\nBloques del mensaje (decimal): ";
 
-        std::cout << "\nBloques del mensaje con digest con digest (decimal): ";
-        std::cout << firmaConDigest(msg_blocks, d_private, n);
-
+        for (long long m : msg_blocks) std::cout << m << " ";
 
         std::cout << "\n\nTEXTO FIRMADO (S = M^d mod n):";
 
